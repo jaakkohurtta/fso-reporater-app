@@ -14,7 +14,7 @@ const AppBarTab = ({ text, route, onPress }) => {
   return (
     <Pressable style={styles.tab} onPress={onPress}>
       <Link to={route}>
-        <Text color="white" fontWeight="bold">
+        <Text color="white" fontSize="heading" fontWeight="bold">
           {text}
         </Text>
       </Link>
