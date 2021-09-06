@@ -4,7 +4,7 @@ import { View, StyleSheet } from "react-native";
 import RepoHeader from "./RepoHeader";
 import RepoContentItem from "./RepoContentItem";
 
-import theme from "../theme";
+import theme from "../../theme";
 
 const styles = StyleSheet.create({
   cardContainer: {
