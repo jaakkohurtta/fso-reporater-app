@@ -1,10 +1,12 @@
 import React from "react";
 import { Pressable, View, StyleSheet } from "react-native";
+import { useHistory } from "react-router-native";
 import { Formik } from "formik";
 import * as yup from "yup";
 
 import Text from "./Text";
 import FormikTextInput from "./FormikTextInput";
+import useSignIn from "../hooks/useSignIn";
 
 import theme from "../theme";
 
@@ -30,17 +32,32 @@ const styles = StyleSheet.create({
 
 const validationSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
-  password: yup.string().required("Passwrord is required"),
+  password: yup.string().required("Password is required"),
 });
 
 const SignIn = () => {
+  const [signIn] = useSignIn();
+  const history = useHistory();
+
+  const handleSubmit = async ({ username, password }) => {
+    try {
+      const { data } = await signIn({ username, password });
+      if (data) {
+        console.log("result data", data);
+        history.push("/repositories");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Formik
       initialValues={{
         username: "",
         password: "",
       }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => handleSubmit(values)}
       validationSchema={validationSchema}
     >
       {({ handleSubmit }) => (
