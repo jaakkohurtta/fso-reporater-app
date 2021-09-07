@@ -19,11 +19,9 @@ const useRepositories = () => {
 
     if (reposQuery.loading) {
       setLoading(true);
-      // console.log(reposQuery.loading);
       return;
     }
 
-    //console.log(reposQuery.data);
     setLoading(false);
     setRepositories(reposQuery.data.repositories);
   };

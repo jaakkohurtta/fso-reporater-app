@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "baseline",
-    height: 80,
+    height: 100,
     backgroundColor: "black",
     opacity: 0.8,
   },
@@ -33,7 +33,7 @@ const AppBar = () => {
   });
 
   const handleSignOut = async () => {
-    console.log("Sign out");
+    console.log("Sign Out pressed");
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
   };
@@ -48,7 +48,7 @@ const AppBar = () => {
         <AppBarTab
           text="Repositories"
           route="/repositories"
-          onPress={() => console.log("Repos pressed!")}
+          onPress={() => console.log("Repos pressed")}
         />
         {!data.authorizedUser ? (
           <AppBarTab

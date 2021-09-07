@@ -43,7 +43,7 @@ const SignIn = () => {
     try {
       const { data } = await signIn({ username, password });
       if (data) {
-        console.log("result data", data);
+        // console.log("result data", data);
         history.push("/repositories");
       }
     } catch (error) {

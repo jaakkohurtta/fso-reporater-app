@@ -7,7 +7,11 @@ import useRepositories from "../../hooks/useRepositories";
 
 const styles = StyleSheet.create({
   separator: {
-    height: 10,
+    height: 8,
+  },
+  container: {
+    flexShrink: 1,
+    flexGrow: 1,
   },
 });
 
@@ -21,13 +25,12 @@ const RepositoryList = () => {
     : [];
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={repositoryNodes}
         renderItem={({ item }) => <RepositoryItem key={item.id} repo={item} />}
         ItemSeparatorComponent={Separator}
       />
-      <Separator />
     </View>
   );
 };
