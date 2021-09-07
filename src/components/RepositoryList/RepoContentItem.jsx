@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 const RepoContentItem = ({ label, data }) => {
   return (
     <View style={styles.contentItemContainer}>
-      <Text fontWeight="bold">
+      <Text testID={`repo${label}`} fontWeight="bold">
         {data >= 1000 ? (data / 1000).toFixed(1).toString().concat("k") : data}
       </Text>
       <Text>{label}</Text>

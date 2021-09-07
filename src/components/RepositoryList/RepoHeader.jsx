@@ -54,12 +54,18 @@ const RepoHeader = ({ repo }) => {
         />
       </View>
       <View style={styles.cardInfoContainer}>
-        <Text style={styles.cardHeader} fontWeight="bold" fontSize="subheading">
+        <Text
+          testID="repoName"
+          style={styles.cardHeader}
+          fontWeight="bold"
+          fontSize="subheading"
+        >
           {fullName}
         </Text>
         <Text style={styles.cardDescription}>{description}</Text>
         <View style={styles.cardBadgeContainer}>
           <Text
+            testID="repoLanguage"
             style={styles.cardBadge}
             color="white"
             backgroundColor="primary"

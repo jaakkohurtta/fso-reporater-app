@@ -35,6 +35,52 @@ const validationSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
+export const SignInForm = ({ handleSubmit }) => {
+  return (
+    <Formik
+      initialValues={{
+        username: "",
+        password: "",
+      }}
+      onSubmit={(values) => handleSubmit(values)}
+      validationSchema={validationSchema}
+    >
+      {({ handleSubmit }) => (
+        <View style={styles.formContainer}>
+          <FormikTextInput
+            testID="usernameField"
+            name="username"
+            placeholder="username"
+            style={styles.textInput}
+          />
+          <FormikTextInput
+            testID="passwordField"
+            name="password"
+            placeholder="password"
+            style={styles.textInput}
+            secureTextEntry
+          />
+          <Pressable
+            testID="submitButton"
+            onPress={handleSubmit}
+            style={styles.submitButton}
+          >
+            <Text
+              color="white"
+              backgroundColor="primary"
+              fontSize="heading"
+              fontWeight="bold"
+            >
+              Sign In
+            </Text>
+          </Pressable>
+          {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
+        </View>
+      )}
+    </Formik>
+  );
+};
+
 const SignIn = () => {
   const [signIn] = useSignIn();
   const history = useHistory();
@@ -51,43 +97,7 @@ const SignIn = () => {
     }
   };
 
-  return (
-    <Formik
-      initialValues={{
-        username: "",
-        password: "",
-      }}
-      onSubmit={(values) => handleSubmit(values)}
-      validationSchema={validationSchema}
-    >
-      {({ handleSubmit }) => (
-        <View style={styles.formContainer}>
-          <FormikTextInput
-            name="username"
-            placeholder="username"
-            style={styles.textInput}
-          />
-          <FormikTextInput
-            name="password"
-            placeholder="password"
-            style={styles.textInput}
-            secureTextEntry
-          />
-          <Pressable onPress={handleSubmit} style={styles.submitButton}>
-            <Text
-              color="white"
-              backgroundColor="primary"
-              fontSize="heading"
-              fontWeight="bold"
-            >
-              Sign In
-            </Text>
-          </Pressable>
-          {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
-        </View>
-      )}
-    </Formik>
-  );
+  return <SignInForm handleSubmit={handleSubmit} />;
 };
 
 export default SignIn;

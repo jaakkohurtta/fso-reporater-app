@@ -23,10 +23,10 @@ const Repositoryrepo = ({ repo }) => {
     <View style={styles.cardContainer}>
       <RepoHeader repo={repo} />
       <View style={styles.cardContentContainer}>
-        <RepoContentItem label="stars" data={repo.stargazersCount} />
-        <RepoContentItem label="forks" data={repo.forksCount} />
-        <RepoContentItem label="reviews" data={repo.reviewCount} />
-        <RepoContentItem label="rating" data={repo.ratingAverage} />
+        <RepoContentItem label="Stars" data={repo.stargazersCount} />
+        <RepoContentItem label="Forks" data={repo.forksCount} />
+        <RepoContentItem label="Reviews" data={repo.reviewCount} />
+        <RepoContentItem label="Rating" data={repo.ratingAverage} />
       </View>
     </View>
   );
