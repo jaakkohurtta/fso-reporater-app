@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
+import { useHistory } from "react-router-native";
 import { useQuery, useApolloClient } from "@apollo/client";
 import Constants from "expo-constants";
 
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
+  const history = useHistory();
 
   const { data, loading } = useQuery(IS_USER_AUTHORIZED, {
     onError: (error) => {
@@ -33,7 +35,7 @@ const AppBar = () => {
   });
 
   const handleSignOut = async () => {
-    console.log("Sign Out pressed");
+    history.push("/");
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
   };
@@ -47,19 +49,19 @@ const AppBar = () => {
       <ScrollView horizontal>
         <AppBarTab
           text="Repositories"
-          route="/repositories"
-          onPress={() => console.log("Repos pressed")}
+          route="/"
+          onPress={() => history.push("/")}
         />
         {!data.authorizedUser ? (
           <AppBarTab
             text="Sign In"
             route="/signin"
-            onPress={() => console.log("Sign In pressed")}
+            onPress={() => history.push("/signin")}
           />
         ) : (
           <AppBarTab
             text="Sign Out"
-            route="/signin"
+            route="/"
             onPress={() => handleSignOut()}
           />
         )}

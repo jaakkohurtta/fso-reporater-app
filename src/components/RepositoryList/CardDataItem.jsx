@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepoContentItem = ({ label, data }) => {
+const CardDataItem = ({ label, data }) => {
   return (
     <View style={styles.contentItemContainer}>
       <Text testID={`repo${label}`} fontWeight="bold">
@@ -21,4 +21,4 @@ const RepoContentItem = ({ label, data }) => {
   );
 };
 
-export default RepoContentItem;
+export default CardDataItem;

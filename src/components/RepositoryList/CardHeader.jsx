@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepoHeader = ({ repo }) => {
+const CardHeader = ({ repo }) => {
   const { fullName, description, language, ownerAvatarUrl } = repo;
 
   return (
@@ -78,4 +78,4 @@ const RepoHeader = ({ repo }) => {
   );
 };
 
-export default RepoHeader;
+export default CardHeader;

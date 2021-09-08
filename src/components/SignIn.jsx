@@ -87,11 +87,8 @@ const SignIn = () => {
 
   const handleSubmit = async ({ username, password }) => {
     try {
-      const { data } = await signIn({ username, password });
-      if (data) {
-        // console.log("result data", data);
-        history.push("/repositories");
-      }
+      await signIn({ username, password });
+      history.push("/");
     } catch (error) {
       console.log(error);
     }

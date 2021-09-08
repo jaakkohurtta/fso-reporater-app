@@ -1,7 +1,8 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
+import { useHistory } from "react-router-native";
 
-import RepositoryItem from "./RepositoryItem";
+import RepositoryCard from "./RepositoryCard";
 
 import useRepositories from "../../hooks/useRepositories";
 
@@ -18,15 +19,27 @@ const styles = StyleSheet.create({
 const Separator = () => <View style={styles.separator} />;
 
 export const RepositoryListContainer = ({ repositories }) => {
+  const history = useHistory();
+
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
+
+  const handlePress = (id) => {
+    history.push(`/${id}`);
+  };
 
   return (
     <View testID="repoList" style={styles.container}>
       <FlatList
         data={repositoryNodes}
-        renderItem={({ item }) => <RepositoryItem key={item.id} repo={item} />}
+        renderItem={({ item }) => (
+          <RepositoryCard
+            key={item.id}
+            repository={item}
+            onPress={() => handlePress(item.id)}
+          />
+        )}
         ItemSeparatorComponent={Separator}
       />
     </View>
