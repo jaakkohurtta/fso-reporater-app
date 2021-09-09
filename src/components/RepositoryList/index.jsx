@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { useHistory } from "react-router-native";
 
 import RepositoryCard from "./RepositoryCard";
+import Separator from "../Separator";
 
 import useRepositories from "../../hooks/useRepositories";
 
@@ -15,8 +16,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
 });
-
-const Separator = () => <View style={styles.separator} />;
 
 export const RepositoryListContainer = ({ repositories }) => {
   const history = useHistory();

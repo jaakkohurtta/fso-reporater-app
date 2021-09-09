@@ -9,6 +9,7 @@ const useRepository = (id) => {
 
   const repoQuery = useQuery(GET_REPOSITORY, {
     variables: { id },
+    fetchPolicy: "cache-and-network",
   });
 
   const fetchRepository = () => {

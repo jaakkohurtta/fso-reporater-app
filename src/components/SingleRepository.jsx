@@ -59,8 +59,6 @@ const Separator = () => <View style={styles.separator} />;
 const ReviewItem = ({ review }) => {
   const date = formatDate(review.createdAt);
 
-  console.log(date);
-
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.reviewHeaderContainer}>
@@ -97,7 +95,7 @@ const SingleRepository = () => {
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
 
-  console.log(reviews);
+  // console.log(reviews);
 
   return (
     <View style={styles.container}>

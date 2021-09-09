@@ -1,10 +1,11 @@
 import React from "react";
-import { Pressable, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import Text from "./Text";
+import Button from "./Button";
+import Separator from "./Separator";
 import FormikTextInput from "./FormikTextInput";
 import useSignIn from "../hooks/useSignIn";
 
@@ -19,14 +20,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,
-    marginTop: 10,
-  },
-  submitButton: {
-    backgroundColor: theme.colors.primary,
-    padding: 10,
-    marginTop: 10,
-    borderRadius: 5,
-    alignItems: "center",
   },
 });
 
@@ -53,6 +46,7 @@ export const SignInForm = ({ handleSubmit }) => {
             placeholder="username"
             style={styles.textInput}
           />
+          <Separator />
           <FormikTextInput
             testID="passwordField"
             name="password"
@@ -60,20 +54,12 @@ export const SignInForm = ({ handleSubmit }) => {
             style={styles.textInput}
             secureTextEntry
           />
-          <Pressable
-            testID="submitButton"
+          <Separator />
+          <Button
             onPress={handleSubmit}
-            style={styles.submitButton}
-          >
-            <Text
-              color="white"
-              backgroundColor="primary"
-              fontSize="heading"
-              fontWeight="bold"
-            >
-              Sign In
-            </Text>
-          </Pressable>
+            label="Sign in"
+            testID="signInSubmit"
+          />
           {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
         </View>
       )}
