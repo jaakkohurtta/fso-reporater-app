@@ -101,8 +101,9 @@ const Review = () => {
         rating,
         text,
       });
-
-      history.push(`/${response.data.createReview.repositoryId}`);
+      if (!response.errors) {
+        history.push(`/${response.data.createReview.repositoryId}`);
+      }
     } catch (error) {
       console.log(error);
     }

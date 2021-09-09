@@ -4,9 +4,10 @@ import { useHistory } from "react-router-native";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import Button from "./Button";
-import Separator from "./Separator";
 import FormikTextInput from "./FormikTextInput";
+import Separator from "./Separator";
+import Button from "./Button";
+import useSignUp from "../hooks/useSignUp";
 import useSignIn from "../hooks/useSignIn";
 
 import theme from "../theme";
@@ -24,16 +25,29 @@ const styles = StyleSheet.create({
 });
 
 const validationSchema = yup.object().shape({
-  username: yup.string().required("Username is required"),
-  password: yup.string().required("Password is required"),
+  username: yup
+    .string()
+    .min(1, "Username too short")
+    .max(30, "Username too long")
+    .required("Username is required"),
+  password: yup
+    .string()
+    .min(5, "Password too short")
+    .max(50, "Password too long")
+    .required("Password is required"),
+  passwordConfirm: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords dont match")
+    .required("Password confirm is required"),
 });
 
-export const SignInForm = ({ handleSubmit }) => {
+const SignUpForm = ({ handleSubmit }) => {
   return (
     <Formik
       initialValues={{
         username: "",
         password: "",
+        passwordConfirm: "",
       }}
       onSubmit={(values) => handleSubmit(values)}
       validationSchema={validationSchema}
@@ -41,39 +55,41 @@ export const SignInForm = ({ handleSubmit }) => {
       {({ handleSubmit }) => (
         <View style={styles.formContainer}>
           <FormikTextInput
-            testID="usernameField"
             name="username"
             placeholder="Username"
             style={styles.textInput}
           />
           <Separator />
           <FormikTextInput
-            testID="passwordField"
             name="password"
             placeholder="Password"
             style={styles.textInput}
             secureTextEntry
           />
           <Separator />
-          <Button
-            onPress={handleSubmit}
-            label="Sign in"
-            testID="signInSubmit"
+          <FormikTextInput
+            name="passwordConfirm"
+            placeholder="Confirm password"
+            style={styles.textInput}
+            secureTextEntry
           />
-          {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
+          <Separator />
+          <Button onPress={handleSubmit} label="Sign up" />
         </View>
       )}
     </Formik>
   );
 };
 
-const SignIn = () => {
-  const [signIn] = useSignIn();
+const SignUp = () => {
+  const [SignUp] = useSignUp();
+  const [SignIn] = useSignIn();
   const history = useHistory();
 
   const handleSubmit = async ({ username, password }) => {
     try {
-      const response = await signIn({ username, password });
+      await SignUp({ username, password });
+      const response = await SignIn({ username, password });
       if (!response.errors) {
         history.push("/");
       }
@@ -82,7 +98,7 @@ const SignIn = () => {
     }
   };
 
-  return <SignInForm handleSubmit={handleSubmit} />;
+  return <SignUpForm handleSubmit={handleSubmit} />;
 };
 
-export default SignIn;
+export default SignUp;

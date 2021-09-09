@@ -52,22 +52,32 @@ const AppBar = () => {
           route="/"
           onPress={() => history.push("/")}
         />
-        <AppBarTab
-          text="Create a review"
-          route="/review"
-          onPress={() => history.push("/review")}
-        />
-        {!data.authorizedUser ? (
+        {data.authorizedUser && (
+          <AppBarTab
+            text="Create a review"
+            route="/review"
+            onPress={() => history.push("/review")}
+          />
+        )}
+        {data.authorizedUser && (
+          <AppBarTab
+            text="Sign Out"
+            route="/"
+            onPress={() => handleSignOut()}
+          />
+        )}
+        {!data.authorizedUser && (
           <AppBarTab
             text="Sign In"
             route="/signin"
             onPress={() => history.push("/signin")}
           />
-        ) : (
+        )}
+        {!data.authorizedUser && (
           <AppBarTab
-            text="Sign Out"
-            route="/"
-            onPress={() => handleSignOut()}
+            text="Sign Up"
+            route="/signup"
+            onPress={() => history.push("/signup")}
           />
         )}
       </ScrollView>
