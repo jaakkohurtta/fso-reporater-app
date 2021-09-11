@@ -1,7 +1,8 @@
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, TextInput } from "react-native";
 import { useHistory } from "react-router-native";
 import { Picker } from "@react-native-picker/picker";
+import { useDebouncedCallback } from "use-debounce";
 
 import RepositoryCard from "./RepositoryCard";
 import Separator from "../Separator";
@@ -23,35 +24,55 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.backgroundSecondary,
     fontSize: theme.fontSizes.subheading,
   },
+  search: {
+    marginLeft: 20,
+    marginTop: 20,
+    marginRight: 20,
+    padding: 10,
+    backgroundColor: theme.colors.backgroundWhite,
+    fontSize: theme.fontSizes.subheading,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: theme.colors.textPrimary,
+  },
 });
 
-const SortingPicker = ({ setQueryVariables }) => {
+const SortingPicker = ({ queryVariables, setQueryVariables }) => {
   const [pickerValue, setPickerValue] = React.useState("latest");
 
   React.useEffect(() => {
     switch (pickerValue) {
       case "latest":
-        setQueryVariables({ orderBy: "CREATED_AT", orderDirection: "DESC" });
+        setQueryVariables({
+          ...queryVariables,
+          orderBy: "CREATED_AT",
+          orderDirection: "DESC",
+        });
         break;
       case "highest":
         setQueryVariables({
+          ...queryVariables,
           orderBy: "RATING_AVERAGE",
           orderDirection: "DESC",
         });
         break;
       case "lowest":
-        setQueryVariables({ orderBy: "RATING_AVERAGE", orderDirection: "ASC" });
+        setQueryVariables({
+          ...queryVariables,
+          orderBy: "RATING_AVERAGE",
+          orderDirection: "ASC",
+        });
         break;
       default:
         break;
     }
   }, [pickerValue]);
+
   return (
-    <View>
+    <View style={styles.picker}>
       <Picker
         selectedValue={pickerValue}
         onValueChange={(itemValue) => setPickerValue(itemValue)}
-        style={styles.picker}
       >
         <Picker.Item color="black" label="Latest repositories" value="latest" />
         <Picker.Item label="Highest rated repositories" value="highest" />
@@ -61,8 +82,38 @@ const SortingPicker = ({ setQueryVariables }) => {
   );
 };
 
+const SearchField = ({ queryVariables, setQueryVariables }) => {
+  const debounce = useDebouncedCallback((filter) => {
+    setQueryVariables({ ...queryVariables, searchKeyword: filter });
+  }, 400);
+
+  return (
+    <TextInput
+      style={styles.search}
+      onChangeText={(value) => debounce(value)}
+      placeholder="Search"
+    />
+  );
+};
+
+const RepositoryListHeader = ({ queryVariables, setQueryVariables }) => {
+  return (
+    <View>
+      <SearchField
+        queryVariables={queryVariables}
+        setQueryVariables={setQueryVariables}
+      />
+      <SortingPicker
+        queryVariables={queryVariables}
+        setQueryVariables={setQueryVariables}
+      />
+    </View>
+  );
+};
+
 export const RepositoryListContainer = ({
   repositories,
+  queryVariables,
   setQueryVariables,
 }) => {
   const history = useHistory();
@@ -79,7 +130,10 @@ export const RepositoryListContainer = ({
     <View testID="repoList" style={styles.container}>
       <FlatList
         ListHeaderComponent={
-          <SortingPicker setQueryVariables={setQueryVariables} />
+          <RepositoryListHeader
+            queryVariables={queryVariables}
+            setQueryVariables={setQueryVariables}
+          />
         }
         data={repositoryNodes}
         renderItem={({ item }) => (
@@ -97,19 +151,18 @@ export const RepositoryListContainer = ({
 
 const RepositoryList = () => {
   const [queryVariables, setQueryVariables] = React.useState({
-    orderBy: 0,
-    orderDirection: 1,
+    orderBy: "CREATED_AT",
+    orderDirection: "DESC",
   });
 
-  const { repositories, refetch } = useRepositories(queryVariables);
+  // console.log(queryVariables);
 
-  React.useEffect(() => {
-    refetch();
-  }, [queryVariables]);
+  const { repositories } = useRepositories(queryVariables);
 
   return (
     <RepositoryListContainer
       repositories={repositories}
+      queryVariables={queryVariables}
       setQueryVariables={setQueryVariables}
     />
   );

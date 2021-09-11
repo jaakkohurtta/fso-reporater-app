@@ -7,7 +7,7 @@ const useRepositories = (queryVariables) => {
   const [repositories, setRepositories] = useState();
   const [loading, setLoading] = useState(false);
 
-  console.log(queryVariables);
+  // console.log(queryVariables);
 
   const reposQuery = useQuery(GET_REPOSITORIES, {
     variables: { ...queryVariables },
@@ -34,7 +34,7 @@ const useRepositories = (queryVariables) => {
 
   useEffect(() => {
     fetchRepositories();
-  }, [reposQuery.loading]);
+  }, [reposQuery.loading, queryVariables]);
 
   return { repositories, loading, refetch: fetchRepositories };
 };
