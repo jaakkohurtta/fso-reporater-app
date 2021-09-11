@@ -35,6 +35,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.textPrimary,
   },
+  loading: {
+    marginTop: 20,
+    alignItems: "center",
+  },
 });
 
 const SortingPicker = ({ queryVariables, setQueryVariables }) => {
@@ -115,6 +119,7 @@ export const RepositoryListContainer = ({
   repositories,
   queryVariables,
   setQueryVariables,
+  onEndReach,
 }) => {
   const history = useHistory();
 
@@ -127,43 +132,45 @@ export const RepositoryListContainer = ({
   };
 
   return (
-    <View testID="repoList" style={styles.container}>
-      <FlatList
-        ListHeaderComponent={
-          <RepositoryListHeader
-            queryVariables={queryVariables}
-            setQueryVariables={setQueryVariables}
-          />
-        }
-        data={repositoryNodes}
-        renderItem={({ item }) => (
-          <RepositoryCard
-            key={item.id}
-            repository={item}
-            onPress={() => handlePress(item.id)}
-          />
-        )}
-        ItemSeparatorComponent={Separator}
-      />
-    </View>
+    <FlatList
+      ListHeaderComponent={
+        <RepositoryListHeader
+          queryVariables={queryVariables}
+          setQueryVariables={setQueryVariables}
+        />
+      }
+      data={repositoryNodes}
+      renderItem={({ item }) => (
+        <RepositoryCard
+          key={item.id}
+          repository={item}
+          onPress={() => handlePress(item.id)}
+        />
+      )}
+      ItemSeparatorComponent={Separator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
+    />
   );
 };
 
 const RepositoryList = () => {
-  const [queryVariables, setQueryVariables] = React.useState({
-    orderBy: "CREATED_AT",
-    orderDirection: "DESC",
-  });
+  const [queryVariables, setQueryVariables] = React.useState({ first: 5 });
 
   // console.log(queryVariables);
 
-  const { repositories } = useRepositories(queryVariables);
+  const { repositories, fetchMore } = useRepositories(queryVariables);
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
       repositories={repositories}
       queryVariables={queryVariables}
       setQueryVariables={setQueryVariables}
+      onEndReach={onEndReach}
     />
   );
 };

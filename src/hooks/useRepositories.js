@@ -1,15 +1,11 @@
-import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 
 import { GET_REPOSITORIES } from "../graphql/queries";
 
 const useRepositories = (queryVariables) => {
-  const [repositories, setRepositories] = useState();
-  const [loading, setLoading] = useState(false);
-
   // console.log(queryVariables);
 
-  const reposQuery = useQuery(GET_REPOSITORIES, {
+  const { data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORIES, {
     variables: { ...queryVariables },
     fetchPolicy: "cache-and-network",
     onError: (error) => {
@@ -17,26 +13,31 @@ const useRepositories = (queryVariables) => {
     },
   });
 
-  const fetchRepositories = () => {
-    if (reposQuery.error) {
-      console.log(reposQuery.error);
+  // console.log(data?.repositories);
+
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
       return;
     }
 
-    if (reposQuery.loading) {
-      setLoading(true);
-      return;
-    }
-
-    setLoading(false);
-    setRepositories(reposQuery.data.repositories);
+    fetchMore({
+      variables: {
+        ...queryVariables,
+        after: data.repositories.pageInfo.endCursor,
+      },
+    });
   };
 
-  useEffect(() => {
-    fetchRepositories();
-  }, [reposQuery.loading, queryVariables]);
+  // console.log(data?.repositories.pageInfo);
 
-  return { repositories, loading, refetch: fetchRepositories };
+  return {
+    repositories: data?.repositories,
+    loading,
+    fetchMore: handleFetchMore,
+    ...result,
+  };
 };
 
 export default useRepositories;

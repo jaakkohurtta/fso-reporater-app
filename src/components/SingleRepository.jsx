@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   reviewRating: {
-    paddingTop: 6,
+    transform: [{ translateY: -2 }],
   },
   reviewHeader: {
     borderBottomWidth: 2,
@@ -85,33 +85,33 @@ const ReviewItem = ({ review }) => {
 
 const SingleRepository = () => {
   const id = useParams().id;
-  const { repository, loading } = useRepository(id);
-
-  if (loading) {
-    return null;
-  }
+  const { repository, fetchMore } = useRepository({ id, first: 5 });
 
   const reviews = repository
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
 
+  const onEndReach = () => {
+    fetchMore();
+  };
+
   // console.log(reviews);
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={reviews}
-        renderItem={({ item }) => <ReviewItem review={item} />}
-        keyExtractor={({ id }) => id}
-        ListHeaderComponent={() => (
-          <View>
-            <RepositoryCard repository={repository} />
-            <Separator />
-          </View>
-        )}
-        ItemSeparatorComponent={Separator}
-      />
-    </View>
+    <FlatList
+      data={reviews}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      keyExtractor={({ id }) => id}
+      ListHeaderComponent={() => (
+        <View>
+          <RepositoryCard repository={repository} />
+          <Separator />
+        </View>
+      )}
+      ItemSeparatorComponent={Separator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
+    />
   );
 };
 

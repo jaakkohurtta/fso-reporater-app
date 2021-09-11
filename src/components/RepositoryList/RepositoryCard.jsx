@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
 });
 
 const RepositoryCard = ({ repository, onPress }) => {
+  if (!repository) {
+    return null;
+  }
+
   const handleClick = () => {
     if (repository.url) {
       Linking.openURL(`${repository.url}`);
