@@ -29,6 +29,7 @@ const AppBar = () => {
   const history = useHistory();
 
   const { data, loading } = useQuery(IS_USER_AUTHORIZED, {
+    variables: { includeReviews: false },
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
     },
@@ -57,6 +58,13 @@ const AppBar = () => {
             text="Create a review"
             route="/review"
             onPress={() => history.push("/review")}
+          />
+        )}
+        {data.authorizedUser && (
+          <AppBarTab
+            text="My reviews"
+            route="/usersreviews"
+            onPress={() => history.push("/usersreviews")}
           />
         )}
         {data.authorizedUser && (

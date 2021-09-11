@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client";
 
 import { CREATE_REVIEW } from "../graphql/mutations";
+import { IS_USER_AUTHORIZED } from "../graphql/queries";
 
 const useCreateReview = () => {
   const [createReview, result] = useMutation(CREATE_REVIEW, {
@@ -14,6 +15,9 @@ const useCreateReview = () => {
       variables: {
         review: { ownerName, repositoryName, rating: parseInt(rating), text },
       },
+      refetchQueries: [
+        { query: IS_USER_AUTHORIZED, variables: { includeReviews: true } },
+      ],
     });
   };
 

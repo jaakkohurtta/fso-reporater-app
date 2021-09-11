@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     flexGrow: 1,
   },
+  buttonPrimary: {
+    backgroundColor: theme.colors.primary,
+  },
 });
 
 const RepositoryCard = ({ repository, onPress }) => {
@@ -43,7 +46,11 @@ const RepositoryCard = ({ repository, onPress }) => {
         </View>
       </Pressable>
       {repository.url && (
-        <Button onPress={() => handleClick()} label="View on Github" />
+        <Button
+          style={styles.buttonPrimary}
+          onPress={() => handleClick()}
+          label="View on Github"
+        />
       )}
     </View>
   );

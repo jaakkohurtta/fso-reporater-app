@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
   },
+  buttonPrimary: {
+    backgroundColor: theme.colors.primary,
+  },
 });
 
 const validationSchema = yup.object().shape({
@@ -74,7 +77,11 @@ const SignUpForm = ({ handleSubmit }) => {
             secureTextEntry
           />
           <Separator />
-          <Button onPress={handleSubmit} label="Sign up" />
+          <Button
+            style={styles.buttonPrimary}
+            onPress={handleSubmit}
+            label="Sign up"
+          />
         </View>
       )}
     </Formik>

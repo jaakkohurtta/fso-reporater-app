@@ -21,6 +21,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
   },
+  buttonPrimary: {
+    backgroundColor: theme.colors.primary,
+  },
 });
 
 const validationSchema = yup.object().shape({
@@ -56,6 +59,7 @@ export const SignInForm = ({ handleSubmit }) => {
           />
           <Separator />
           <Button
+            style={styles.buttonPrimary}
             onPress={handleSubmit}
             label="Sign in"
             testID="signInSubmit"

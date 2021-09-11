@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
   },
-  textInputBig: {
-    height: 140,
+  buttonPrimary: {
+    backgroundColor: theme.colors.primary,
   },
 });
 
@@ -75,10 +75,11 @@ const ReviewForm = ({ handleSubmit }) => {
             name="text"
             placeholder="Write a review.."
             multiline
-            style={[styles.textInput, styles.textInputBig]}
+            style={styles.textInput}
           />
           <Separator />
           <Button
+            style={styles.buttonPrimary}
             onPress={handleSubmit}
             label="Create a review"
             testID="reviewSubmit"

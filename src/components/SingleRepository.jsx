@@ -3,11 +3,8 @@ import { View, FlatList, StyleSheet } from "react-native";
 import { useParams } from "react-router-native";
 
 import RepositoryCard from "./RepositoryList/RepositoryCard";
-import Text from "./Text";
+import ReviewCard from "./ReviewCard";
 import useRepository from "../hooks/useRepository";
-import { formatDate } from "../utils/formatDate";
-
-import theme from "../theme";
 
 const styles = StyleSheet.create({
   separator: {
@@ -17,71 +14,9 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexGrow: 1,
   },
-  reviewContainer: {
-    padding: 5,
-    backgroundColor: theme.colors.backgroundPrimary,
-  },
-  reviewHeaderContainer: {
-    flexDirection: "row",
-  },
-  reviewRatingContainer: {
-    flexGrow: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 2,
-    borderColor: theme.colors.primary,
-    marginRight: 12,
-  },
-  reviewInfoContainer: {
-    flexGrow: 1,
-    flex: 1,
-  },
-  reviewRating: {
-    transform: [{ translateY: -2 }],
-  },
-  reviewHeader: {
-    borderBottomWidth: 2,
-    borderBottomColor: theme.colors.backgroundSecondary,
-  },
-  reviewDate: {
-    marginTop: 5,
-  },
-  reviewText: {
-    marginLeft: 60,
-  },
 });
 
 const Separator = () => <View style={styles.separator} />;
-
-const ReviewItem = ({ review }) => {
-  const date = formatDate(review.createdAt);
-
-  return (
-    <View style={styles.reviewContainer}>
-      <View style={styles.reviewHeaderContainer}>
-        <View style={styles.reviewRatingContainer}>
-          <Text color="primary" fontSize="heading" style={styles.reviewRating}>
-            {review.rating}
-          </Text>
-        </View>
-        <View style={styles.reviewInfoContainer}>
-          <Text
-            style={styles.reviewHeader}
-            fontSize="subheading"
-            fontWeight="bold"
-          >
-            {review.user.username}
-          </Text>
-          <Text fontSize="subhading">{date}</Text>
-        </View>
-      </View>
-      <Text style={styles.reviewText}>{review.text}</Text>
-    </View>
-  );
-};
 
 const SingleRepository = () => {
   const id = useParams().id;
@@ -100,7 +35,9 @@ const SingleRepository = () => {
   return (
     <FlatList
       data={reviews}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => (
+        <ReviewCard actionButtons={false} review={item} />
+      )}
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => (
         <View>
