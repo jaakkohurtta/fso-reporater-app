@@ -1,3 +1,3 @@
 ### Fullstackopen Part 10
 
-Github RepoRater Android App with React Native
+Github RepoRater Mobile App with React Native
